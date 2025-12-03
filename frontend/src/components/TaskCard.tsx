@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 import { Checkbox } from "./ui/checkbox";
-import { Label } from "./ui/label";
 import getColorByTitle from "../utils/GetColorByTitle";
+import { toast } from "sonner";
 
 type StatusData = {
   _id: number;
@@ -13,9 +13,10 @@ type StatusData = {
 
 interface Props {
   data: StatusData;
+  delete?: boolean;
 }
 
-const TaskCard = ({ data }: Props) => {
+const TaskCard = ({ data, delete: showDelete }: Props) => {
   const [isHidden, setIsHidden] = useState(false);
 
   const { bg, fg, icon } = getColorByTitle(data.tag);
@@ -25,6 +26,8 @@ const TaskCard = ({ data }: Props) => {
       const isCompleted = !data.isCompleted;
 
       setIsHidden(true);
+      if (isCompleted) toast.success("task completed");
+      else toast.error("unchecked the task");
 
       await axios.post("/api/complete", {
         id: data._id,
@@ -36,13 +39,27 @@ const TaskCard = ({ data }: Props) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      setIsHidden(true);
+      toast("Task is deleted");
+      await axios.delete("/api/task", {
+        data: { id: data._id },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (isHidden) return null;
 
   return (
-    <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 cursor-pointer animate-collapsible-down">
-      <Checkbox checked={data.isCompleted} onCheckedChange={checked} />
-      <div className="flex justify-between items-center w-full gap-2 font-normal">
-        <p className="text-sm leading-none font-medium flex-1">{data.title}</p>
+    <div className=" flex items-start gap-3 rounded-lg border p-3 ">
+      <div className="flex justify-between items-center w-full gap-2 font-normal ">
+        <Checkbox checked={data.isCompleted} onCheckedChange={checked} />
+        <p className="text-sm font-medium flex-1 overflow-hidden">
+          {data.title}
+        </p>
         <div
           className="border rounded-full px-2.5 py-0.5 flex items-center gap-1"
           style={{
@@ -60,8 +77,22 @@ const TaskCard = ({ data }: Props) => {
             {data.tag}
           </span>
         </div>
+        <span>
+          {showDelete ? (
+            <div onClick={handleDelete}>
+              <span
+                className="material-symbols-outlined"
+                style={{ fontSize: "24px", color: "red" }}
+              >
+                delete
+              </span>
+            </div>
+          ) : (
+            ""
+          )}
+        </span>
       </div>
-    </Label>
+    </div>
   );
 };
 

@@ -6,7 +6,11 @@ import TaskColor from "../utils/TaskColor";
 import api from "../lib/api";
 import { toast } from "sonner";
 
-const NewTask = () => {
+interface Prop {
+  id?: number;
+}
+
+const NewTask = ({ id }: Prop) => {
   const [clicked, setClicked] = useState(false);
   const [title, setTitle] = useState("");
   const [selectedTag, setSelectedTag] = useState<string>("");
@@ -35,8 +39,7 @@ const NewTask = () => {
   const handleSave = async () => {
     try {
       setClicked(false);
-      // TODO: Replace with actual user ID from auth context
-      const userId = "121214";
+      const userId = id;
 
       await api.post("/task", {
         userId: userId,
@@ -44,8 +47,7 @@ const NewTask = () => {
         tag: selectedTag,
       });
       toast.success("Task has been created");
-      // Ideally we should trigger a refresh of the task list here
-      // For now, we just log success, but in a real app we'd use a context or query invalidation
+      window.location.reload();
       console.log("Task created successfully");
     } catch (error) {
       console.error("Error saving task:", error);

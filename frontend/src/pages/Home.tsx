@@ -55,9 +55,11 @@ const Home = () => {
       <div className="text-xl font-semibold">Task Mission</div>
       <div className="grid gap-4 py-4">
         {isLoading ? (
-          <p className="text-muted-foreground">Loading tasks...</p>
+          <p className="text-muted-foreground text-center animate-spin">
+            <span className="material-symbols-outlined">sync</span>
+          </p>
         ) : taskData.length === 0 ? (
-          <p className="text-muted-foreground">No tasks found</p>
+          <p className="text-muted-foreground text-center">No tasks found</p>
         ) : (
           taskData.map((task) => <TaskCard key={task._id} data={task} />)
         )}
