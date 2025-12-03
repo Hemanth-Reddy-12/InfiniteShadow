@@ -100,10 +100,25 @@ const createTask = async (req, res) => {
   }
 };
 
+const deleteTask = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const deleteTask = await TaskSchema.findByIdAndDelete(id);
+    if (!deleteTask) {
+      return res.status(404).json({ msg: "task not found" });
+    }
+    return res.status(200).json({ msg: "Task deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "error while adding the task" });
+  }
+};
+
 module.exports = {
   getTasks,
   completeTask,
   getUpcomingTasks,
   getHistory,
   createTask,
+  deleteTask,
 };
