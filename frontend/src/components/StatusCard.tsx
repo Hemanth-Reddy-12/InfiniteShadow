@@ -1,18 +1,24 @@
 import { Card, CardContent } from "./ui/card";
 
-type StatusData = {
+type taskColor = {
   title: string;
-  count: number;
   icon: string;
   bg: string;
   fg: string;
 };
+type count = {
+  work: number;
+  fitness: number;
+  project: number;
+  personal: number;
+};
 
-interface Props {
-  data: StatusData;
-}
+type Props = {
+  taskColor: taskColor;
+  count: count;
+};
 
-const StatusCard = ({ data: { title, count, icon, bg, fg } }: Props) => {
+const StatusCard = ({ taskColor: { bg, fg, title, icon }, count }: Props) => {
   return (
     <Card style={{ backgroundColor: bg }}>
       <CardContent>
@@ -27,7 +33,7 @@ const StatusCard = ({ data: { title, count, icon, bg, fg } }: Props) => {
             className="flex items-center text-2xl font-bold"
             style={{ color: fg }}
           >
-            {count}
+            {count[title as keyof count]}
           </div>
         </div>
       </CardContent>
