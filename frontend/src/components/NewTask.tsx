@@ -41,7 +41,7 @@ const NewTask = ({ id }: Prop) => {
       setClicked(false);
       const userId = id;
 
-      await api.post("/task", {
+      await api.post("/api/task", {
         userId: userId,
         title: title,
         tag: selectedTag,
