@@ -33,9 +33,18 @@ const Home = () => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const res = await api.get("/upcomingTask");
+        const res = await api.get("/api/upcomingTask");
+
+        console.log("Full response:", res);
+        console.log("Response data:", res.data);
+        console.log("Task array:", res.data?.task);
+        console.log("Task type:", typeof res.data?.task);
+        console.log("Is array?:", Array.isArray(res.data?.task));
+
         setTaskData(res.data.task);
         setCount(res.data.count);
+        6;
+        console.log(res.data);
       } catch (error) {
         console.error("Can't retrieve the task data:", error);
       } finally {

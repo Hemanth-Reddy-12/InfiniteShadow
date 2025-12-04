@@ -7,7 +7,13 @@ require("dotenv").config();
 const app = express();
 
 // * middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://shadow-sandy-six.vercel.app"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -23,7 +29,11 @@ app.get("/api", (req, res) => {
 // * Routes
 app.use("/api", taskRoutes);
 
-const PORT = process.env.DEVELOPMENT_PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`server is listen at port : ${PORT}`);
-});
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.DEVELOPMENT_PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`server is listen at port : ${PORT}`);
+  });
+}
+
+module.exports = app;

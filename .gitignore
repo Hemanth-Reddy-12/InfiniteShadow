@@ -1,5 +1,7 @@
 backend/node_modules/
+backend/.vercel/
 frontend/node_modules/
+frontend/.vercel/
 
 *.log
 npm-debug.log*

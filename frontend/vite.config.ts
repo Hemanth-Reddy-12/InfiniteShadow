@@ -13,7 +13,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://localhost:5000",
+      "/api": "https://infinite-backend-delta.vercel.app",
     },
     allowedHosts: true,
   },

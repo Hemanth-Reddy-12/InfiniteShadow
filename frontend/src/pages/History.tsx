@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import TaskCard from "../components/TaskCard";
+import api from "../lib/api";
 
 const History = () => {
   const [taskData, setTaskData] = useState([]);
@@ -8,7 +8,7 @@ const History = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios
+      await api
         .get("/api/history")
         .then((res) => setTaskData(res.data.task))
         .catch(() => console.log("error"))

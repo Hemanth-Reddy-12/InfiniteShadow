@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import { Checkbox } from "./ui/checkbox";
 import getColorByTitle from "../utils/GetColorByTitle";
 import { toast } from "sonner";
+import api from "../lib/api";
 
 type StatusData = {
   _id: number;
@@ -29,7 +29,7 @@ const TaskCard = ({ data, delete: showDelete }: Props) => {
       if (isCompleted) toast.success("task completed");
       else toast.error("unchecked the task");
 
-      await axios.post("/api/complete", {
+      await api.post("/api/complete", {
         id: data._id,
         isCompleted: isCompleted,
       });
@@ -43,7 +43,7 @@ const TaskCard = ({ data, delete: showDelete }: Props) => {
     try {
       setIsHidden(true);
       toast("Task is deleted");
-      await axios.delete("/api/task", {
+      await api.delete("/api/task", {
         data: { id: data._id },
       });
     } catch (error) {
